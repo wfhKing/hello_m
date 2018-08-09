@@ -1,0 +1,89 @@
+介绍JSTL:
+	JSTL是apache对EL表达式的扩展（也就是说JSTL依赖EL），JSTL是标签语言！JSTL标签使用以来非常方便，它与JSP动作标签一样，只不过它不是JSP内置的标签，需要我们自己导包，以及指定标签库而已！
+
+
+
+1.<c:out value=”aaa”/>
+	输出aaa字符串常量
+
+2.<c:out value=”${aaa}”/>
+	与${aaa}相同
+
+3.<c:out value=”${aaa}” default=”xxx”/>
+	当${aaa}不存在时，输出xxx字符串
+
+4.<%
+
+request.setAttribute("a","<script>alert('hello');</script>");
+
+%>
+
+<c:out value="${a }" default="xxx" escapeXml="false" />
+
+	当escapeXml为false，不会转换“<”、“>”。这可能会受到JavaScript攻击。
+5.<%
+
+	pageContext.setAttribute("a","pageContext");
+	request.setAttribute("a","session");
+	session.setAttribute("a","session");
+	application.setAttribute("a","application");
+
+  %>
+	<c: remove var="a"/>
+	<c: out value="${a}" default="none"/>
+	删除所有域中name为a的数据！
+
+6.<c:remove var="a" scope=”page”/>	
+	删除pageContext中name为a的数据
+
+7.<c:url value="/"/>
+     输出上下文路径：/项目名/
+
+8.<c:url value="/" var="a" scope="request"/>
+    把本该输出的结果赋给变量a。范围为request
+
+9.<c:url value="/AServlet"/>
+     输出：/项目名/AServlet
+
+10.<c:url value="/AServlet">
+
+<c:param name="username" value="abc"/>
+
+<c:param name="password" value="123"/>                   
+
+     输出：/项目名/AServlet?username=abc&password=123
+
+     如果参数中包含中文，那么会自动使用URL编码！
+11.<c:set var="a" value="hello"/>
+	<c:if test="${not empty a }">
+	<c:out value="${a }"/>
+</c:if>
+	if标签的test属性必须是一个boolean类型的值，如果test的值为true，那么执行if标签的内容，否则不执行。
+
+12.<c:set var="score" value="${param.score }"/>
+<c:choose>
+	<c:when test="${score > 100 || score < 0}">错误的分数：${score }</c:when>
+	<c:when test="${score >= 90 }">A级</c:when>
+	<c:when test="${score >= 80 }">B级</c:when>
+	<c:when test="${score >= 70 }">C级</c:when>
+	<c:when test="${score >= 60 }">D级</c:when>
+	<c:otherwise>E级</c:otherwise>
+</c:choose>
+	choose标签对应Java中的if/else if/else结构。when标签的test为true时，会执行这个when的内容。当所有when标签的test都为false时，才会执行otherwise标签的内容。
+
+13.<c:set var="sum" value="0" /> 
+<c:forEach var="i" begin="1" end="10"> 
+	<c:set var="sum" value="${sum + i}" /> 
+</c:forEach>
+<c:out value="sum = ${sum }"/>
+<c:set var="sum" value="0" />
+<c:forEach var="i" begin="1" end="10" step ="2">
+	<c:set var="sum" value="${sum + i}" />
+</c:forEach>
+<c:out value="sum = ${sum }"/>
+	
+
+
+
+
+
